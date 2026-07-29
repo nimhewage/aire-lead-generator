@@ -1,36 +1,40 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# A/RE Lead Generator Pipeline
 
-## Getting Started
+Dedicated Next.js app for the AIRE team to configure ICP targeting, switch markets, review mined leads, and (locally) run lead-mining agent swarms.
 
-First, run the development server:
+Brand: [aire.inc/au](https://aire.inc/au)
+
+## Markets included
+
+| Market | Leads file |
+|---|---|
+| Dubai / UAE | `data/leads/leads-dubai*.csv` |
+| Sydney | `data/leads/leads-sydney.csv` |
+| Melbourne | `data/leads/leads-melbourne.csv` |
+| Brisbane | `data/leads/leads-brisbane.csv` |
+
+## Local setup
 
 ```bash
+npm install
+cp .env.example .env.local
+# optional: AGENTWORKS_ROOT=/path/to/agentworks for swarm mining
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Open [http://localhost:3100](http://localhost:3100)
 
 ## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Import this GitHub repo in Vercel
+2. Framework preset: **Next.js** (auto)
+3. Build command: `npm run build`
+4. No env vars required for browsing markets / leads
+5. Optional later: `AGENTWORKS_ROOT` is only needed for local swarm execution (not available on Vercel serverless)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Market switching persists in `/tmp` on Vercel for the life of the serverless instance; default campaign loads from `data/campaigns/`.
+
+## Notes
+
+- Swarm mining needs local `agentworks` + xAI credits — use locally, not on Vercel.
+- Config lives in `data/campaigns/*.json`.

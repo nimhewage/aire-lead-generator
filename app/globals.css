@@ -2,20 +2,158 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@font-face {
+  font-family: "Alfabet";
+  src: url("/aire/fonts/Alfabet_Regular.otf") format("opentype");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Alfabet";
+  src: url("/aire/fonts/Alfabet_SemiBold.otf") format("opentype");
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Alfabet";
+  src: url("/aire/fonts/Alfabet_Bold.otf") format("opentype");
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Alfabet";
+  src: url("/aire/fonts/Alfabet_Black.otf") format("opentype");
+  font-weight: 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Instrument Serif";
+  src: url("/aire/fonts/InstrumentSerif-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Space Mono";
+  src: url("/aire/fonts/SpaceMono-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Space Mono";
+  src: url("/aire/fonts/SpaceMono-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-display: swap;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  --aire-ink: #1a1715;
+  --aire-paper: #f5f3ef;
+  --aire-white: #ffffff;
+  --aire-gray-700: #5c5957;
+  --aire-gray-500: #7b7a78;
+  --aire-gray-200: #c9c7c3;
+  --aire-gray-100: #e8e5e1;
+  --aire-gray-50: #f0ede8;
+  --aire-indigo: #352a7e;
+  --aire-indigo-100: #dbd9ea;
+  --aire-magenta: #bf035b;
+  --aire-magenta-100: #f7dce6;
+  --aire-orange: #df6e2c;
+  --aire-orange-100: #faeacc;
+  --aire-cream: #f5e7c0;
+  --aire-gradient: linear-gradient(135deg, #352a7e 0%, #bf035b 50%, #df6e2c 100%);
+}
+
+html,
+body {
+  background: var(--aire-paper);
+  color: var(--aire-ink);
+  font-family: "Alfabet", system-ui, sans-serif;
+  height: 100%;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  overflow: hidden;
+}
+
+.aire-label {
+  font-family: "Space Mono", ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--aire-gray-500);
+}
+
+.aire-display {
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+
+.aire-serif {
+  font-family: "Instrument Serif", Georgia, serif;
+  font-style: italic;
+}
+
+.aire-gradient-text {
+  background: var(--aire-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.aire-card {
+  background: var(--aire-white);
+  border: 1px solid var(--aire-gray-100);
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(26, 23, 21, 0.04);
+}
+
+.aire-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: 0.625rem 1rem;
+  transition: opacity 120ms ease-out, transform 50ms ease-out;
+  cursor: pointer;
+}
+.aire-btn:active {
+  transform: scale(0.97);
+}
+.aire-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.aire-btn-primary {
+  background: var(--aire-ink);
+  color: var(--aire-paper);
+}
+.aire-btn-primary:hover:not(:disabled) {
+  opacity: 0.9;
+}
+.aire-btn-accent {
+  background: var(--aire-indigo);
+  color: white;
+}
+.aire-btn-ghost {
+  background: transparent;
+  border: 1px solid var(--aire-gray-200);
+  color: var(--aire-ink);
+}
+.aire-input {
+  width: 100%;
+  border: 1px solid var(--aire-gray-200);
+  border-radius: 4px;
+  background: white;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.875rem;
+}
+.aire-input:focus {
+  outline: 2px solid var(--aire-indigo);
+  outline-offset: 1px;
 }

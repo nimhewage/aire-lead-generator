@@ -1,0 +1,692 @@
+{
+  "id": "sydney-aire",
+  "name": "AIRE \u00b7 Sydney / Australia",
+  "vendor": {
+    "name": "AIRE",
+    "positioning": "AI-led \u00b7 Outcome-driven \u00b7 Built for speed",
+    "currency": "USD",
+    "site": "https://aire.inc/au"
+  },
+  "market": {
+    "region": "Australia",
+    "country": "Australia",
+    "countryCode": "AU",
+    "primaryCity": "Sydney",
+    "cities": [
+      "Sydney",
+      "Parramatta",
+      "North Sydney"
+    ],
+    "language": "en",
+    "locationPhrase": "Sydney or New South Wales, Australia",
+    "districtLabel": "suburb or business precinct if known, else empty string",
+    "districts": [
+      {
+        "name": "Sydney CBD",
+        "sectorTags": [
+          "financial services",
+          "banking",
+          "insurance",
+          "professional services"
+        ]
+      },
+      {
+        "name": "North Sydney",
+        "sectorTags": [
+          "technology",
+          "telecom",
+          "corporate hq"
+        ]
+      },
+      {
+        "name": "Macquarie Park",
+        "sectorTags": [
+          "technology",
+          "pharma",
+          "education"
+        ]
+      },
+      {
+        "name": "Barangaroo",
+        "sectorTags": [
+          "financial services",
+          "corporate hq"
+        ]
+      }
+    ],
+    "adjacentMarkets": [
+      "Melbourne",
+      "Brisbane",
+      "Auckland"
+    ],
+    "timezone": "Australia/Sydney"
+  },
+  "icp": {
+    "sectors": [
+      {
+        "id": "banking_financial_services",
+        "label": "Banking & Financial Services",
+        "priority": 1,
+        "keywords": [
+          "bank",
+          "financial",
+          "capital",
+          "investment",
+          "wealth",
+          "payments",
+          "fintech",
+          "exchange",
+          "islamic bank"
+        ],
+        "enabled": true
+      },
+      {
+        "id": "insurance",
+        "label": "Insurance & Reinsurance",
+        "priority": 1,
+        "keywords": [
+          "insurance",
+          "takaful",
+          "reinsurance",
+          "assurance",
+          "actuarial"
+        ],
+        "enabled": true
+      },
+      {
+        "id": "energy_utilities",
+        "label": "Energy, Oil & Gas and Utilities",
+        "priority": 1,
+        "keywords": [
+          "energy",
+          "oil",
+          "gas",
+          "petroleum",
+          "utility",
+          "electricity",
+          "water",
+          "power",
+          "renewable",
+          "solar",
+          "aluminium",
+          "petrochemical"
+        ],
+        "enabled": true
+      },
+      {
+        "id": "government_public_sector",
+        "label": "Government & Public Sector",
+        "priority": 1,
+        "keywords": [
+          "authority",
+          "municipality",
+          "ministry",
+          "government",
+          "department",
+          "council",
+          "police",
+          "customs",
+          "roads"
+        ],
+        "enabled": true
+      },
+      {
+        "id": "healthcare_pharma",
+        "label": "Healthcare & Pharmaceuticals",
+        "priority": 1,
+        "keywords": [
+          "health",
+          "hospital",
+          "clinic",
+          "medical",
+          "pharma",
+          "diagnostic",
+          "care"
+        ],
+        "enabled": true
+      },
+      {
+        "id": "aviation_travel",
+        "label": "Aviation & Travel",
+        "priority": 1,
+        "keywords": [
+          "airline",
+          "airport",
+          "aviation",
+          "air",
+          "travel",
+          "airways",
+          "cargo"
+        ],
+        "enabled": true
+      },
+      {
+        "id": "logistics_ports",
+        "label": "Logistics, Ports & Supply Chain",
+        "priority": 1,
+        "keywords": [
+          "logistics",
+          "ports",
+          "shipping",
+          "freight",
+          "courier",
+          "supply chain",
+          "warehousing",
+          "terminal"
+        ],
+        "enabled": true
+      },
+      {
+        "id": "telecom_technology",
+        "label": "Telecom & Technology",
+        "priority": 2,
+        "keywords": [
+          "telecom",
+          "technology",
+          "digital",
+          "software",
+          "cloud",
+          "data",
+          "cyber",
+          "platform",
+          "systems"
+        ],
+        "enabled": true
+      },
+      {
+        "id": "retail_fmcg",
+        "label": "Retail, E-commerce & FMCG",
+        "priority": 2,
+        "keywords": [
+          "retail",
+          "group",
+          "foods",
+          "trading",
+          "commerce",
+          "mall",
+          "supermarket",
+          "brands",
+          "consumer"
+        ],
+        "enabled": true
+      },
+      {
+        "id": "real_estate_construction",
+        "label": "Real Estate & Construction",
+        "priority": 2,
+        "keywords": [
+          "properties",
+          "real estate",
+          "development",
+          "construction",
+          "contracting",
+          "engineering",
+          "estates"
+        ],
+        "enabled": true
+      },
+      {
+        "id": "hospitality_tourism",
+        "label": "Hospitality & Tourism",
+        "priority": 2,
+        "keywords": [
+          "hotel",
+          "resort",
+          "hospitality",
+          "tourism",
+          "leisure",
+          "entertainment"
+        ],
+        "enabled": true
+      },
+      {
+        "id": "manufacturing_industrial",
+        "label": "Manufacturing & Industrial",
+        "priority": 2,
+        "keywords": [
+          "manufacturing",
+          "industries",
+          "industrial",
+          "factory",
+          "steel",
+          "cement",
+          "packaging",
+          "chemicals"
+        ],
+        "enabled": true
+      },
+      {
+        "id": "professional_services",
+        "label": "Professional & Business Services",
+        "priority": 3,
+        "keywords": [
+          "consulting",
+          "advisory",
+          "audit",
+          "legal",
+          "law",
+          "accounting",
+          "recruitment"
+        ],
+        "enabled": true
+      },
+      {
+        "id": "education",
+        "label": "Education & Research",
+        "priority": 3,
+        "keywords": [
+          "university",
+          "school",
+          "education",
+          "academy",
+          "institute",
+          "college",
+          "research"
+        ],
+        "enabled": true
+      }
+    ],
+    "employeeCount": {
+      "excludeBelow": 200,
+      "discoveryMinMention": 200,
+      "hardExcludeBelow": 50
+    },
+    "revenueBands": [
+      "50m_250m",
+      "250m_1b",
+      "1b_10b",
+      "over_10b",
+      "not_disclosed"
+    ],
+    "businessTypes": [
+      "Listed",
+      "Private",
+      "Government",
+      "Semi-Government",
+      "Family Conglomerate",
+      "Free Zone Entity"
+    ],
+    "excludes": [
+      "pure software product vendors with no UAE operating footprint",
+      "companies under 50 employees",
+      "consumer-only apps with no enterprise buyer"
+    ],
+    "demandDrivers": [
+      "APRA CPS 230 / data resilience",
+      "Australian AI Ethics & safety regulation",
+      "Cloud repatriation and lakehouse modernisation"
+    ],
+    "excludeDomains": []
+  },
+  "discovery": {
+    "useSeedList": true,
+    "useGroundedSearch": true,
+    "verifyDomains": true,
+    "maxSectorPriority": 3,
+    "enabledSectorIds": [
+      "banking_financial_services",
+      "insurance",
+      "energy_utilities",
+      "government_public_sector",
+      "healthcare_pharma",
+      "aviation_travel",
+      "logistics_ports",
+      "telecom_technology",
+      "retail_fmcg",
+      "real_estate_construction",
+      "hospitality_tourism",
+      "manufacturing_industrial"
+    ],
+    "angles": [
+      {
+        "id": "scale",
+        "enabled": true,
+        "template": "the largest and most established {label} organisations with major operating presence in {location}, prioritising those with more than 200 staff"
+      },
+      {
+        "id": "intent_hiring",
+        "enabled": true,
+        "template": "{label} organisations in {location} that are currently hiring data engineers, data scientists, analytics or AI roles, or that have recently built out a data team"
+      },
+      {
+        "id": "intent_platform",
+        "enabled": true,
+        "template": "{label} organisations in {location} that have publicly announced data platform, lakehouse, cloud migration, Databricks, Snowflake, Microsoft Fabric, analytics or artificial intelligence initiatives"
+      },
+      {
+        "id": "transformation",
+        "enabled": true,
+        "template": "{label} organisations in {location} undergoing digital transformation, reporting rapid growth, merging, or facing new regulatory reporting obligations"
+      },
+      {
+        "id": "district_cluster",
+        "enabled": true,
+        "template": "{label} headquarters or major offices clustered in key business districts of {city} / {region}"
+      }
+    ],
+    "resultsPerQuery": {
+      "min": 8,
+      "max": 20
+    },
+    "workers": 6,
+    "seedDomains": []
+  },
+  "contacts": {
+    "maxPerCompany": 3,
+    "maxLookups": 400,
+    "buyerTitles": {
+      "tier1": [
+        "Group Chief Information Officer",
+        "Chief Information Officer",
+        "Chief Technology Officer",
+        "Chief Digital Officer",
+        "Chief Data Officer",
+        "Chief Data & Analytics Officer",
+        "Chief AI Officer",
+        "Chief Transformation Officer"
+      ],
+      "tier2": [
+        "Head of Data & Analytics",
+        "Head of Data",
+        "Director of Data & Analytics",
+        "Head of Artificial Intelligence",
+        "Head of Data Science",
+        "Director of Digital Transformation",
+        "VP Technology",
+        "VP Engineering",
+        "Head of Enterprise Architecture",
+        "Chief Information Security Officer",
+        "Head of Innovation"
+      ],
+      "tier3": [
+        "Head of Business Intelligence",
+        "Data Platform Manager",
+        "Analytics Manager",
+        "Head of MLOps",
+        "Lead Data Engineer",
+        "Head of Digital",
+        "IT Director"
+      ]
+    },
+    "allowInboxFallback": true,
+    "emailPatterns": [
+      "{first}.{last}@{domain}"
+    ]
+  },
+  "scoring": {
+    "maxTotal": 100,
+    "sectorPriorityPoints": {
+      "1": 12,
+      "2": 8,
+      "3": 4
+    },
+    "employeeBands": [
+      {
+        "min": 5000,
+        "points": 10
+      },
+      {
+        "min": 1000,
+        "points": 10
+      },
+      {
+        "min": 400,
+        "points": 8
+      },
+      {
+        "min": 200,
+        "points": 6
+      },
+      {
+        "min": 1,
+        "points": 2
+      }
+    ],
+    "revenuePoints": {
+      "over_10b": 8,
+      "1b_10b": 8,
+      "250m_1b": 6,
+      "50m_250m": 4,
+      "under_50m": 1,
+      "not_disclosed": 3
+    },
+    "titleTierPoints": {
+      "tier1": 12,
+      "tier2": 9,
+      "tier3": 6,
+      "other": 3
+    },
+    "contactBonuses": {
+      "pointsPerContact": 2,
+      "contactDepthCap": 4,
+      "linkedinBonus": 4
+    },
+    "intent": {
+      "hiringPoints": 9,
+      "modernPlatformPoints": 7,
+      "legacyPlatformPoints": 8,
+      "otherCloudPoints": 4,
+      "modernPlatformKeywords": [
+        "databricks",
+        "snowflake",
+        "azure",
+        "aws",
+        "gcp"
+      ],
+      "legacyPlatformKeywords": [
+        "hadoop",
+        "on-prem",
+        "teradata",
+        "netezza",
+        "informatica"
+      ]
+    },
+    "maturityPoints": {
+      "nascent": 4,
+      "reporting": 11,
+      "analytics": 15,
+      "ml_pilots": 13,
+      "ai_at_scale": 7
+    },
+    "timing": {
+      "regulatoryPressurePoints": 6,
+      "businessTypeBonus": {
+        "Government": 4,
+        "Semi-Government": 4,
+        "Listed": 2,
+        "Family Conglomerate": 2
+      }
+    },
+    "tiers": {
+      "A": {
+        "min": 75,
+        "label": "Hot",
+        "action": "Contact this week"
+      },
+      "B": {
+        "min": 60,
+        "label": "Warm",
+        "action": "Contact this month"
+      },
+      "C": {
+        "min": 45,
+        "label": "Developing",
+        "action": "Contact this quarter"
+      },
+      "D": {
+        "min": 0,
+        "label": "Nurture",
+        "action": "Add to nurture sequence"
+      }
+    }
+  },
+  "services": {
+    "catalog": [
+      {
+        "name": "Databricks Cloud Architecture",
+        "url": "https://getaiready.com.au/services/databricks-cloud-architecture",
+        "pitch": "Lakehouse design, Unity Catalog governance and Delta Live Tables pipelines, including migration off Hadoop, Snowflake or Synapse, as an official Databricks Delivery Partner.",
+        "buyer": "Head of Data Platform / Chief Data Officer"
+      },
+      {
+        "name": "LLM Solutions",
+        "url": "https://getaiready.com.au/services/llm-solutions",
+        "pitch": "Enterprise RAG and document intelligence grounded in your own content, with guardrails, evaluation and source citations rather than a chatbot that guesses.",
+        "buyer": "Chief Digital Officer / Head of Innovation"
+      },
+      {
+        "name": "AI-Ready Governance",
+        "url": "https://getaiready.com.au/services/ai-ready-governance",
+        "pitch": "Data governance, model governance, responsible AI and compliance implemented largely through Unity Catalog, so AI survives regulator and audit scrutiny.",
+        "buyer": "Chief Risk Officer / Head of Compliance"
+      },
+      {
+        "name": "AI Agentic Automation",
+        "url": "https://getaiready.com.au/services/ai-agentic-automation",
+        "pitch": "Production AI agents for process automation, knowledge work and customer-facing workflows, built with guardrails and observability rather than as chatbots.",
+        "buyer": "COO / Head of Operations"
+      },
+      {
+        "name": "AWS AI/ML Services",
+        "url": "https://getaiready.com.au/services/aws-ai-ml",
+        "pitch": "SageMaker, Bedrock, Textract and Rekognition delivered on an S3 data lake foundation, built to data-sovereignty and regulated-workload requirements.",
+        "buyer": "Cloud Architect / Head of Platform Engineering"
+      },
+      {
+        "name": "Data Discovery & Strategy",
+        "url": "https://getaiready.com.au/services/data-discovery-strategy",
+        "pitch": "Data inventory, AI readiness assessment and a reference architecture producing a phased roadmap with a board-ready business case.",
+        "buyer": "Chief Data Officer / Group CIO"
+      },
+      {
+        "name": "AI Readiness Diagnostic",
+        "url": "https://getaiready.com.au/diagnostic",
+        "pitch": "A short structured assessment scoring readiness across six dimensions, returning the specific gaps that block AI at scale.",
+        "buyer": "Group CIO / Chief Transformation Officer"
+      },
+      {
+        "name": "CTO Enablement",
+        "url": "https://getaiready.com.au/services/cto-enablement",
+        "pitch": "A principal-level architect embedded on fixed-scope workstreams covering architecture review, platform integration and MLOps.",
+        "buyer": "CTO / VP Engineering"
+      },
+      {
+        "name": "Executive Alignment",
+        "url": "https://getaiready.com.au/services/executive-alignment",
+        "pitch": "Board presentations, strategic planning and ROI business cases that secure executive sponsorship and budget for AI investment.",
+        "buyer": "CEO / CFO / Board"
+      },
+      {
+        "name": "AI Training & Change Management",
+        "url": "https://getaiready.com.au/services/training-change-management",
+        "pitch": "Two-track enablement across executive, business and developer audiences that turns Copilot, Claude and ChatGPT licences into measurable productivity.",
+        "buyer": "Chief People Officer / Head of L&D"
+      },
+      {
+        "name": "Databricks SIEM",
+        "url": "https://getaiready.com.au/lp/databricks-siem",
+        "pitch": "Security analytics on the Databricks Lakehouse with ML threat detection and Unity Catalog compliance, cutting SIEM cost substantially.",
+        "buyer": "Chief Information Security Officer"
+      },
+      {
+        "name": "Claude Code Training",
+        "url": "https://getaiready.com.au/services/claude-code-training",
+        "pitch": "Private intensive workshops for engineering teams on agentic development workflows, MCP servers and custom tooling.",
+        "buyer": "Head of Engineering / VP Engineering"
+      },
+      {
+        "name": "Executive AI Coaching",
+        "url": "https://getaiready.com.au/executive-ai-coaching",
+        "pitch": "One-on-one coaching for senior leaders covering personal tool fluency, AI investment judgment and transformation leadership.",
+        "buyer": "CEO / Board Director"
+      }
+    ],
+    "playbook": {
+      "banking_financial_services": {
+        "primary": "Databricks Cloud Architecture",
+        "secondary": "AI-Ready Governance",
+        "caseStudyId": "knowledge_orchestration_bank"
+      },
+      "insurance": {
+        "primary": "LLM Solutions",
+        "secondary": "AI-Ready Governance",
+        "caseStudyId": "regulatory_summarisation_insurer"
+      },
+      "energy_utilities": {
+        "primary": "Databricks Cloud Architecture",
+        "secondary": "AI Agentic Automation",
+        "caseStudyId": "predictive_maintenance_gas"
+      },
+      "government_public_sector": {
+        "primary": "AI-Ready Governance",
+        "secondary": "Databricks Cloud Architecture",
+        "caseStudyId": "knowledge_orchestration_bank"
+      },
+      "healthcare_pharma": {
+        "primary": "LLM Solutions",
+        "secondary": "AI-Ready Governance",
+        "caseStudyId": "nlp_preprocessing_healthcare"
+      },
+      "aviation_travel": {
+        "primary": "Databricks Cloud Architecture",
+        "secondary": "AI Agentic Automation",
+        "caseStudyId": "predictive_maintenance_gas"
+      },
+      "logistics_ports": {
+        "primary": "AWS AI/ML Services",
+        "secondary": "AI Agentic Automation",
+        "caseStudyId": "computer_vision_logistics"
+      },
+      "telecom_technology": {
+        "primary": "Databricks Cloud Architecture",
+        "secondary": "AI-Ready Governance",
+        "caseStudyId": "drift_monitoring_retail"
+      },
+      "retail_fmcg": {
+        "primary": "Databricks Cloud Architecture",
+        "secondary": "AI-Ready Governance",
+        "caseStudyId": "rag_model_gateway_retail"
+      },
+      "real_estate_construction": {
+        "primary": "Data Discovery & Strategy",
+        "secondary": "AI Agentic Automation",
+        "caseStudyId": "data_mining_agent_fintech"
+      },
+      "hospitality_tourism": {
+        "primary": "AI Agentic Automation",
+        "secondary": "AI Training & Change Management",
+        "caseStudyId": "rag_model_gateway_retail"
+      },
+      "manufacturing_industrial": {
+        "primary": "Databricks Cloud Architecture",
+        "secondary": "AI Agentic Automation",
+        "caseStudyId": "predictive_maintenance_gas"
+      },
+      "professional_services": {
+        "primary": "LLM Solutions",
+        "secondary": "AI Training & Change Management",
+        "caseStudyId": "modular_rag_framework"
+      },
+      "education": {
+        "primary": "AI Training & Change Management",
+        "secondary": "LLM Solutions",
+        "caseStudyId": "nlp_preprocessing_healthcare"
+      },
+      "default": {
+        "primary": "AI Readiness Diagnostic",
+        "secondary": "Data Discovery & Strategy",
+        "caseStudyId": "modular_rag_framework"
+      }
+    }
+  },
+  "runtime": {
+    "pipeline": "sydney",
+    "agentworksRoot": "",
+    "outputDir": "data/leads",
+    "models": {
+      "fast": "grok-4.20-0309-non-reasoning",
+      "deep": "grok-4.5",
+      "search": "grok-4.20-0309-non-reasoning"
+    }
+  }
+}
