@@ -40,7 +40,7 @@ function resolveCommand(
   throw new Error(`Unsupported pipeline/stage: ${pipeline}/${stage}`);
 }
 
-export function startSwarmJob(input: {
+export async function startSwarmJob(input: {
   campaignId: string;
   stage: SwarmStage;
   limit?: number;
@@ -49,10 +49,10 @@ export function startSwarmJob(input: {
     throw new Error("A swarm job is already running. Wait for it to finish.");
   }
 
-  const campaign = getCampaign(input.campaignId);
+  const campaign = await getCampaign(input.campaignId);
   if (!campaign) throw new Error("Campaign not found");
 
-  activateCampaign(campaign.id);
+  await activateCampaign(campaign.id);
 
   const root = campaign.runtime.agentworksRoot;
   if (!fs.existsSync(root)) {

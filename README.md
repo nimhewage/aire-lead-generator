@@ -1,24 +1,26 @@
 # A/RE Lead Generator Pipeline
 
-Dedicated Next.js app for the AIRE team to configure ICP targeting, switch markets, review mined leads, and (locally) run lead-mining agent swarms.
+Multi-market lead queue for the AIRE team — ICP targeting, market switching, expandable sales context.
 
 Brand: [aire.inc/au](https://aire.inc/au)
 
-## Markets included
+## Storage
 
-| Market | Leads file |
+Lead + campaign data lives in **Supabase** (not in the Vercel bundle):
+
+| Table | Purpose |
 |---|---|
-| Dubai / UAE | `data/leads/leads-dubai*.csv` |
-| Sydney | `data/leads/leads-sydney.csv` |
-| Melbourne | `data/leads/leads-melbourne.csv` |
-| Brisbane | `data/leads/leads-brisbane.csv` |
+| `campaigns` | Market / ICP config JSON |
+| `leads` | Scored accounts + full CSV payload |
+| `app_state` | Active campaign id |
 
 ## Local setup
 
 ```bash
 npm install
 cp .env.example .env.local
-# optional: AGENTWORKS_ROOT=/path/to/agentworks for swarm mining
+# fill SUPABASE_* keys
+npm run seed:supabase   # one-time: upload local CSVs → Supabase
 npm run dev
 ```
 
@@ -26,15 +28,30 @@ Open [http://localhost:3100](http://localhost:3100)
 
 ## Deploy on Vercel
 
-1. Import this GitHub repo in Vercel
-2. Framework preset: **Next.js** (auto)
-3. Build command: `npm run build`
-4. No env vars required for browsing markets / leads
-5. Optional later: `AGENTWORKS_ROOT` is only needed for local swarm execution (not available on Vercel serverless)
+**Important:** deploy this Next.js repo  
+[`nimhewage/aire-lead-generator`](https://github.com/nimhewage/aire-lead-generator)  
 
-Market switching persists in `/tmp` on Vercel for the life of the serverless instance; default campaign loads from `data/campaigns/`.
+Do **not** deploy `datamining-aire` to Vercel — that Python mining bundle exceeds the 500 MB function limit.
+
+### Vercel env vars
+
+```
+SUPABASE_URL=https://rcgplklpktfqcjuzgjhs.supabase.co
+SUPABASE_PUBLISHABLE_KEY=...
+SUPABASE_SECRET_KEY=...
+SUPABASE_JWKS_URL=https://rcgplklpktfqcjuzgjhs.supabase.co/auth/v1/.well-known/jwks.json
+NEXT_PUBLIC_SUPABASE_URL=https://rcgplklpktfqcjuzgjhs.supabase.co
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=...
+```
+
+Framework: Next.js · Build: `npm run build`
+
+## Markets seeded
+
+- Dubai / UAE  
+- Sydney / Melbourne / Brisbane  
 
 ## Notes
 
-- Swarm mining needs local `agentworks` + xAI credits — use locally, not on Vercel.
-- Config lives in `data/campaigns/*.json`.
+- Swarm mining needs local `agentworks` + xAI — not available on Vercel serverless.
+- Reseed anytime with `npm run seed:supabase` from a machine that has `data/leads/*.csv`.

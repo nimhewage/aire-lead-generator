@@ -1,16 +1,25 @@
 {
   "id": "dubai-aire",
-  "name": "AIRE \u00b7 Dubai / UAE",
+  "name": "AIRE · Dubai / UAE",
   "vendor": {
     "name": "AIRE",
-    "positioning": "AI-led \u00b7 Outcome-driven \u00b7 Built for speed",
+    "positioning": "AI-led · Outcome-driven · Built for speed",
     "currency": "USD",
     "site": "https://aire.inc/au"
   },
   "market": {
     "region": "United Arab Emirates",
+    "country": "United Arab Emirates",
+    "countryCode": "AE",
     "primaryCity": "Dubai",
+    "cities": [
+      "Dubai",
+      "Abu Dhabi",
+      "Sharjah"
+    ],
     "language": "en",
+    "locationPhrase": "Dubai or the wider UAE",
+    "districtLabel": "Dubai district, free zone, or emirate if known, else empty string",
     "districts": [
       {
         "name": "DIFC",
@@ -225,15 +234,6 @@
       "Abu Dhabi",
       "Sharjah"
     ],
-    "country": "United Arab Emirates",
-    "countryCode": "AE",
-    "cities": [
-      "Dubai",
-      "Abu Dhabi",
-      "Sharjah"
-    ],
-    "locationPhrase": "Dubai or the wider UAE",
-    "districtLabel": "Dubai district, free zone, or emirate if known, else empty string",
     "timezone": "Asia/Dubai"
   },
   "icp": {
@@ -856,8 +856,8 @@
   },
   "runtime": {
     "pipeline": "dubai",
-    "agentworksRoot": "",
-    "outputDir": "data/leads",
+    "agentworksRoot": "/Users/nim/LeadMinior/agentworks",
+    "outputDir": "/Users/nim/aire-sales/data/leads",
     "models": {
       "fast": "grok-4.20-0309-non-reasoning",
       "deep": "grok-4.5",

@@ -15,12 +15,14 @@ export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
 export async function GET() {
-  const campaigns = listCampaigns();
-  const active = getActiveCampaign();
-  const inventories: Record<string, ReturnType<typeof inventoryForCampaign>> =
-    {};
+  const campaigns = await listCampaigns();
+  const active = await getActiveCampaign();
+  const inventories: Record<
+    string,
+    Awaited<ReturnType<typeof inventoryForCampaign>>
+  > = {};
   for (const c of campaigns) {
-    inventories[c.id] = inventoryForCampaign(c);
+    inventories[c.id] = await inventoryForCampaign(c);
   }
   return NextResponse.json({
     campaigns,
@@ -28,14 +30,15 @@ export async function GET() {
     inventory: active ? inventories[active.id] ?? null : null,
     inventories,
     templates: listMarketTemplates(),
+    storage: process.env.SUPABASE_URL ? "supabase" : "local",
   });
 }
 
 export async function PUT(req: NextRequest) {
   try {
     const body = (await req.json()) as CampaignConfig;
-    const saved = saveCampaign(body);
-    activateCampaign(saved.id);
+    const saved = await saveCampaign(body);
+    await activateCampaign(saved.id);
     return NextResponse.json({ campaign: saved });
   } catch (e: unknown) {
     return NextResponse.json(
@@ -50,21 +53,21 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
 
     if (body.action === "activate" && body.id) {
-      const campaign = activateCampaign(body.id);
+      const campaign = await activateCampaign(body.id);
       return NextResponse.json({ campaign });
     }
 
     if (body.action === "clone" && body.id) {
-      const campaign = cloneCampaign(body.id, {
+      const campaign = await cloneCampaign(body.id, {
         id: body.newId,
         name: body.name,
       });
-      if (body.activate) activateCampaign(campaign.id);
+      if (body.activate) await activateCampaign(campaign.id);
       return NextResponse.json({ campaign });
     }
 
     if (body.action === "createFromTemplate" && body.templateId) {
-      const campaign = createCampaignFromTemplate(body.templateId, {
+      const campaign = await createCampaignFromTemplate(body.templateId, {
         id: body.id,
         name: body.name,
         activate: body.activate !== false,

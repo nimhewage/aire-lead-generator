@@ -1,9 +1,9 @@
 {
   "id": "brisbane-aire",
-  "name": "AIRE \u00b7 Brisbane / Australia",
+  "name": "AIRE · Brisbane / Australia",
   "vendor": {
     "name": "AIRE",
-    "positioning": "AI-led \u00b7 Outcome-driven \u00b7 Built for speed",
+    "positioning": "AI-led · Outcome-driven · Built for speed",
     "currency": "USD",
     "site": "https://aire.inc/au"
   },
@@ -681,8 +681,8 @@
   },
   "runtime": {
     "pipeline": "brisbane",
-    "agentworksRoot": "",
-    "outputDir": "data/leads",
+    "agentworksRoot": "/Users/nim/LeadMinior/agentworks",
+    "outputDir": "/Users/nim/aire-sales/data/leads",
     "models": {
       "fast": "grok-4.20-0309-non-reasoning",
       "deep": "grok-4.5",

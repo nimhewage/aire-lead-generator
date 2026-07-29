@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Invalid stage" }, { status: 400 });
     }
 
-    const job = startSwarmJob({ campaignId, stage, limit });
+    const job = await startSwarmJob({ campaignId, stage, limit });
     return NextResponse.json({ job });
   } catch (e: unknown) {
     const message = e instanceof Error ? e.message : "Failed to start swarm";
