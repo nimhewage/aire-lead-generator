@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import fs from "fs";
 import { getActiveCampaign, inventoryForCampaign } from "@/lib/campaigns";
+import { mapLeadRow } from "@/lib/leads";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -55,22 +56,7 @@ export async function GET() {
   }
   const rows = parseCsv(fs.readFileSync(inventory.file, "utf-8"));
   const leads = rows
-    .map((r) => ({
-      company: r.company_name || "",
-      domain: r.company_domain || "",
-      sector: r.segment || r.industry || "",
-      tier: (r.icp_tier || "").toUpperCase(),
-      score: Number(r.icp_score || 0),
-      contact: r.contact_1_name || "",
-      title: r.contact_1_title || "",
-      email: r.contact_1_email || "",
-      service:
-        r.primary_service ||
-        r.recommended_service ||
-        r.recommended_services ||
-        "",
-      city: r.city || campaign.market.primaryCity || "",
-    }))
+    .map((r) => mapLeadRow(r, campaign.market.primaryCity || ""))
     .filter((l) => l.company || l.domain)
     .sort((a, b) => b.score - a.score);
 

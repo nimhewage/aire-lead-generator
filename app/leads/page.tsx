@@ -3,23 +3,13 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import useSWR from "swr";
-import { Download, Radar, Search } from "lucide-react";
+import { ChevronDown, Download, Radar, Search } from "lucide-react";
 import { MarketSwitcher } from "@/components/MarketSwitcher";
+import { LeadDetail } from "@/components/LeadDetail";
+import type { Lead } from "@/lib/leads";
+import { leadSearchBlob } from "@/lib/leads";
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
-
-type Lead = {
-  company: string;
-  domain: string;
-  sector: string;
-  tier: string;
-  score: number;
-  contact: string;
-  title: string;
-  email: string;
-  service: string;
-  city: string;
-};
 
 const TIERS = ["all", "A", "B", "C", "D"] as const;
 
@@ -30,37 +20,30 @@ export default function LeadsPage() {
     { refreshInterval: 8000 }
   );
   const { data, mutate } = useSWR(
-    campaigns?.activeId ? `/api/leads?market=${campaigns.activeId}` : "/api/leads",
+    campaigns?.activeId
+      ? `/api/leads?market=${campaigns.activeId}`
+      : "/api/leads",
     fetcher
   );
   const [query, setQuery] = useState("");
   const [tier, setTier] = useState<(typeof TIERS)[number]>("all");
   const [onlyContacts, setOnlyContacts] = useState(false);
+  const [openId, setOpenId] = useState<string | null>(null);
 
-  const leads: Lead[] = data?.leads || [];
   const marketName =
     data?.market?.primaryCity || data?.market?.name || "Active market";
 
   const filtered = useMemo(() => {
+    const leads: Lead[] = data?.leads || [];
     const q = query.trim().toLowerCase();
     return leads.filter((lead) => {
       if (tier !== "all" && lead.tier !== tier) return false;
-      if (onlyContacts && !(lead.contact || lead.email)) return false;
+      if (onlyContacts && !(lead.contact || lead.email || lead.contacts?.length))
+        return false;
       if (!q) return true;
-      return [
-        lead.company,
-        lead.domain,
-        lead.contact,
-        lead.email,
-        lead.sector,
-        lead.service,
-        lead.city,
-      ]
-        .join(" ")
-        .toLowerCase()
-        .includes(q);
+      return leadSearchBlob(lead).includes(q);
     });
-  }, [leads, query, tier, onlyContacts]);
+  }, [data?.leads, query, tier, onlyContacts]);
 
   return (
     <div className="space-y-5">
@@ -71,9 +54,10 @@ export default function LeadsPage() {
             {filtered.length.toLocaleString()} accounts
           </h2>
           <p className="text-sm text-[var(--aire-gray-700)] mt-1">
+            Click a row for fit rationale, product match, pitch and buyers.
             {data?.inventory?.updatedAt
-              ? `Updated ${new Date(data.inventory.updatedAt).toLocaleString()}`
-              : "Run a swarm to populate this queue."}
+              ? ` Updated ${new Date(data.inventory.updatedAt).toLocaleString()}.`
+              : ""}
           </p>
         </div>
         <div className="flex flex-wrap gap-2 self-start">
@@ -91,6 +75,7 @@ export default function LeadsPage() {
       <section className="aire-card p-4">
         <MarketSwitcher
           onSwitched={() => {
+            setOpenId(null);
             mutate();
             mutateCampaigns();
           }}
@@ -103,7 +88,7 @@ export default function LeadsPage() {
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--aire-gray-500)]" />
             <input
               className="aire-input !pl-9"
-              placeholder="Search company, contact, domain…"
+              placeholder="Search company, pain, service, contact…"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
             />
@@ -135,35 +120,42 @@ export default function LeadsPage() {
         </div>
       </section>
 
-      <div className="aire-card overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="min-w-full text-left text-sm">
-            <thead className="border-b border-[var(--aire-gray-100)] bg-[var(--aire-gray-50)]">
-              <tr className="aire-label">
-                <th className="px-4 py-3 font-normal">Company</th>
-                <th className="px-4 py-3 font-normal">Tier</th>
-                <th className="px-4 py-3 font-normal">Score</th>
-                <th className="px-4 py-3 font-normal">Contact</th>
-                <th className="px-4 py-3 font-normal">Service fit</th>
-                <th className="px-4 py-3 font-normal">City</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.slice(0, 250).map((lead) => (
-                <tr
-                  key={`${lead.domain}-${lead.contact}-${lead.score}`}
-                  className="border-b border-[var(--aire-gray-100)] align-top hover:bg-[var(--aire-gray-50)]/70"
-                >
-                  <td className="px-4 py-3">
+      <div className="aire-card overflow-hidden divide-y divide-[var(--aire-gray-100)]">
+        <div className="hidden sm:grid grid-cols-[1.4fr_70px_70px_1fr_1fr_28px] gap-2 px-4 py-3 bg-[var(--aire-gray-50)] aire-label">
+          <span>Company</span>
+          <span>Tier</span>
+          <span>Score</span>
+          <span>Contact</span>
+          <span>Service fit</span>
+          <span />
+        </div>
+
+        {filtered.slice(0, 250).map((lead) => {
+          const open = openId === lead.id;
+          return (
+            <div key={lead.id} className={open ? "bg-[var(--aire-white)]" : ""}>
+              <button
+                type="button"
+                onClick={() => setOpenId(open ? null : lead.id)}
+                className="w-full text-left px-4 py-3 hover:bg-[var(--aire-gray-50)]/80 transition-colors"
+                aria-expanded={open}
+              >
+                <div className="grid gap-2 sm:grid-cols-[1.4fr_70px_70px_1fr_1fr_28px] sm:items-start">
+                  <div className="min-w-0">
                     <p className="font-semibold">{lead.company}</p>
-                    <p className="font-mono text-xs text-[var(--aire-gray-500)]">
+                    <p className="font-mono text-xs text-[var(--aire-gray-500)] truncate">
                       {lead.domain}
                     </p>
                     <p className="text-xs text-[var(--aire-gray-500)] mt-0.5">
-                      {lead.sector}
+                      {[lead.sector, lead.city].filter(Boolean).join(" · ")}
                     </p>
-                  </td>
-                  <td className="px-4 py-3">
+                    {!open && lead.fitJustification && (
+                      <p className="mt-1.5 text-xs text-[var(--aire-gray-700)] line-clamp-2">
+                        {lead.fitJustification}
+                      </p>
+                    )}
+                  </div>
+                  <div>
                     <span
                       className={`inline-flex rounded-full px-2 py-0.5 text-xs font-bold ${
                         lead.tier === "A"
@@ -175,43 +167,40 @@ export default function LeadsPage() {
                     >
                       {lead.tier || "—"}
                     </span>
-                  </td>
-                  <td className="px-4 py-3 font-mono font-semibold">
+                  </div>
+                  <div className="font-mono font-semibold text-sm">
                     {lead.score || "—"}
-                  </td>
-                  <td className="px-4 py-3">
-                    <p className="font-medium">{lead.contact || "—"}</p>
-                    <p className="text-xs text-[var(--aire-gray-500)]">
+                  </div>
+                  <div className="min-w-0">
+                    <p className="font-medium text-sm truncate">
+                      {lead.contact || "—"}
+                    </p>
+                    <p className="text-xs text-[var(--aire-gray-500)] truncate">
                       {lead.title}
                     </p>
-                    {lead.email && (
-                      <a
-                        href={`mailto:${lead.email}`}
-                        className="font-mono text-xs text-[var(--aire-indigo)] hover:underline"
-                      >
-                        {lead.email}
-                      </a>
-                    )}
-                  </td>
-                  <td className="px-4 py-3 text-xs max-w-[180px]">
+                  </div>
+                  <div className="text-xs text-[var(--aire-gray-700)] line-clamp-2">
                     {lead.service || "—"}
-                  </td>
-                  <td className="px-4 py-3">{lead.city || "—"}</td>
-                </tr>
-              ))}
-              {!filtered.length && (
-                <tr>
-                  <td
-                    colSpan={6}
-                    className="px-4 py-12 text-center text-[var(--aire-gray-500)]"
-                  >
-                    No leads match these filters.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+                  </div>
+                  <div className="flex justify-end">
+                    <ChevronDown
+                      className={`h-4 w-4 text-[var(--aire-gray-500)] transition-transform ${
+                        open ? "rotate-180" : ""
+                      }`}
+                    />
+                  </div>
+                </div>
+              </button>
+              {open && <LeadDetail lead={lead} />}
+            </div>
+          );
+        })}
+
+        {!filtered.length && (
+          <p className="px-4 py-12 text-center text-[var(--aire-gray-500)]">
+            No leads match these filters.
+          </p>
+        )}
       </div>
     </div>
   );
