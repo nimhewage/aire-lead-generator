@@ -4,49 +4,49 @@ Multi-market lead queue for the AIRE team — ICP targeting, market switching, e
 
 Brand: [aire.inc/au](https://aire.inc/au)
 
-## Storage
+## Data storage
 
-Lead + campaign data lives in **Supabase** (not in the Vercel bundle):
+By default the app can use **Supabase**. If Supabase is unavailable (or you set `AIRE_DATA_SOURCE=local`), it reads from:
 
-| Table | Purpose |
+| Path | Purpose |
 |---|---|
-| `campaigns` | Market / ICP config JSON |
-| `leads` | Scored accounts + full CSV payload |
-| `app_state` | Active campaign id |
+| `data/campaigns/*.json` | Market / ICP config |
+| `data/leads/leads-*.csv` | Scored lead queues |
 
 ## Local setup
 
 ```bash
 npm install
 cp .env.example .env.local
-# fill SUPABASE_* keys
-npm run seed:supabase   # one-time: upload local CSVs → Supabase
+# Keep AIRE_DATA_SOURCE=local unless Supabase is healthy
 npm run dev
 ```
 
 Open [http://localhost:3100](http://localhost:3100)
 
+### Optional: seed / refresh Supabase
+
+```bash
+# Requires a live SUPABASE_URL + SUPABASE_SECRET_KEY
+AIRE_DATA_SOURCE=   # unset local mode
+npm run seed:supabase
+```
+
 ## Deploy on Vercel
 
-**Important:** deploy this Next.js repo  
-[`nimhewage/aire-lead-generator`](https://github.com/nimhewage/aire-lead-generator)  
+Deploy **this** Next.js repo: [`nimhewage/aire-lead-generator`](https://github.com/nimhewage/aire-lead-generator)
 
-Do **not** deploy `datamining-aire` to Vercel — that Python mining bundle exceeds the 500 MB function limit.
+Do **not** deploy `datamining-aire` to Vercel (Python bundle exceeds the 500 MB limit).
 
-### Vercel env vars
+### Recommended Vercel env (works offline from committed CSVs)
 
 ```
-SUPABASE_URL=https://rcgplklpktfqcjuzgjhs.supabase.co
-SUPABASE_PUBLISHABLE_KEY=...
-SUPABASE_SECRET_KEY=...
-SUPABASE_JWKS_URL=https://rcgplklpktfqcjuzgjhs.supabase.co/auth/v1/.well-known/jwks.json
-NEXT_PUBLIC_SUPABASE_URL=https://rcgplklpktfqcjuzgjhs.supabase.co
-NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=...
+AIRE_DATA_SOURCE=local
 ```
 
-Framework: Next.js · Build: `npm run build`
+When you have a healthy Supabase project again, set the `SUPABASE_*` keys and remove `AIRE_DATA_SOURCE=local`.
 
-## Markets seeded
+## Markets included
 
 - Dubai / UAE  
 - Sydney / Melbourne / Brisbane  
@@ -54,4 +54,3 @@ Framework: Next.js · Build: `npm run build`
 ## Notes
 
 - Swarm mining needs local `agentworks` + xAI — not available on Vercel serverless.
-- Reseed anytime with `npm run seed:supabase` from a machine that has `data/leads/*.csv`.

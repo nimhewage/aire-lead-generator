@@ -46,6 +46,3 @@ next-env.d.ts
 .data/
 data/jobs/
 data/active-campaign.json
-
-# Lead CSVs live in Supabase — keep local copies for reseeding only
-data/leads/*.csv

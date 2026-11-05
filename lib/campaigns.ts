@@ -8,6 +8,7 @@ export {
   createCampaignFromTemplate,
   getActiveCampaign,
   getCampaign,
+  inventoryAllCampaigns,
   inventoryForCampaign,
   listCampaigns,
   listMarketTemplates,

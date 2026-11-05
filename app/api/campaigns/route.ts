@@ -4,7 +4,7 @@ import {
   cloneCampaign,
   createCampaignFromTemplate,
   getActiveCampaign,
-  inventoryForCampaign,
+  inventoryAllCampaigns,
   listCampaigns,
   listMarketTemplates,
   saveCampaign,
@@ -16,21 +16,17 @@ export const runtime = "nodejs";
 
 export async function GET() {
   const campaigns = await listCampaigns();
-  const active = await getActiveCampaign();
-  const inventories: Record<
-    string,
-    Awaited<ReturnType<typeof inventoryForCampaign>>
-  > = {};
-  for (const c of campaigns) {
-    inventories[c.id] = await inventoryForCampaign(c);
-  }
+  const [active, inventories] = await Promise.all([
+    getActiveCampaign(),
+    inventoryAllCampaigns(campaigns),
+  ]);
   return NextResponse.json({
     campaigns,
     activeId: active?.id ?? null,
     inventory: active ? inventories[active.id] ?? null : null,
     inventories,
     templates: listMarketTemplates(),
-    storage: process.env.SUPABASE_URL ? "supabase" : "local",
+    storage: inventories[campaigns[0]?.id || ""]?.source || "local",
   });
 }
 

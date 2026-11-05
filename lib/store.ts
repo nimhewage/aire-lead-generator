@@ -111,14 +111,18 @@ function listCampaignsFromDisk(): CampaignConfig[] {
 export async function listCampaigns(): Promise<CampaignConfig[]> {
   const sb = getSupabaseAdmin();
   if (sb && supabaseConfigured()) {
-    const { data, error } = await sb
-      .from("campaigns")
-      .select("config")
-      .order("name");
-    if (!error && data?.length) {
-      return data.map((row) =>
-        normalizeCampaign(row.config as CampaignConfig)
-      );
+    try {
+      const { data, error } = await sb
+        .from("campaigns")
+        .select("config")
+        .order("name");
+      if (!error && data?.length) {
+        return data.map((row) =>
+          normalizeCampaign(row.config as CampaignConfig)
+        );
+      }
+    } catch {
+      /* fall through to disk */
     }
   }
   return listCampaignsFromDisk();
@@ -129,13 +133,17 @@ export async function getCampaign(
 ): Promise<CampaignConfig | null> {
   const sb = getSupabaseAdmin();
   if (sb && supabaseConfigured()) {
-    const { data, error } = await sb
-      .from("campaigns")
-      .select("config")
-      .eq("id", id)
-      .maybeSingle();
-    if (!error && data?.config) {
-      return normalizeCampaign(data.config as CampaignConfig);
+    try {
+      const { data, error } = await sb
+        .from("campaigns")
+        .select("config")
+        .eq("id", id)
+        .maybeSingle();
+      if (!error && data?.config) {
+        return normalizeCampaign(data.config as CampaignConfig);
+      }
+    } catch {
+      /* fall through to disk */
     }
   }
   ensureDirs();
@@ -204,15 +212,19 @@ export async function activateCampaign(id: string): Promise<CampaignConfig> {
 export async function getActiveCampaign(): Promise<CampaignConfig | null> {
   const sb = getSupabaseAdmin();
   if (sb && supabaseConfigured()) {
-    const { data } = await sb
-      .from("app_state")
-      .select("value")
-      .eq("key", "active_campaign_id")
-      .maybeSingle();
-    const id = (data?.value as { id?: string } | null)?.id;
-    if (id) {
-      const campaign = await getCampaign(id);
-      if (campaign) return campaign;
+    try {
+      const { data } = await sb
+        .from("app_state")
+        .select("value")
+        .eq("key", "active_campaign_id")
+        .maybeSingle();
+      const id = (data?.value as { id?: string } | null)?.id;
+      if (id) {
+        const campaign = await getCampaign(id);
+        if (campaign) return campaign;
+      }
+    } catch {
+      /* fall through to disk */
     }
   }
   ensureDirs();
@@ -234,38 +246,94 @@ export type Inventory = {
   source: "supabase" | "csv";
 };
 
+export async function inventoryAllCampaigns(
+  campaigns: CampaignConfig[]
+): Promise<Record<string, Inventory>> {
+  const out: Record<string, Inventory> = {};
+  const sb = getSupabaseAdmin();
+  if (sb && supabaseConfigured() && campaigns.length) {
+    try {
+      const { data, error } = await sb
+        .from("leads")
+        .select("campaign_id, contact_1_name, updated_at");
+      if (!error && data) {
+        const byId = new Map<
+          string,
+          { leadCount: number; withContacts: number; updatedAt: string | null }
+        >();
+        for (const row of data) {
+          const id = row.campaign_id as string;
+          const cur = byId.get(id) || {
+            leadCount: 0,
+            withContacts: 0,
+            updatedAt: null as string | null,
+          };
+          cur.leadCount += 1;
+          if (row.contact_1_name) cur.withContacts += 1;
+          const ts = row.updated_at as string | null;
+          if (ts && (!cur.updatedAt || ts > cur.updatedAt)) cur.updatedAt = ts;
+          byId.set(id, cur);
+        }
+        for (const c of campaigns) {
+          const pipeline = c.runtime?.pipeline || "dubai";
+          const stats = byId.get(c.id) || {
+            leadCount: 0,
+            withContacts: 0,
+            updatedAt: null,
+          };
+          out[c.id] = {
+            file: `supabase:leads/${c.id}`,
+            leadCount: stats.leadCount,
+            withContacts: stats.withContacts,
+            updatedAt: stats.updatedAt,
+            pipeline,
+            source: "supabase",
+          };
+        }
+        return out;
+      }
+    } catch {
+      /* fall through to per-campaign / local */
+    }
+  }
+  await Promise.all(
+    campaigns.map(async (c) => {
+      out[c.id] = await inventoryForCampaign(c);
+    })
+  );
+  return out;
+}
+
 export async function inventoryForCampaign(
   config: CampaignConfig
 ): Promise<Inventory> {
   const pipeline = config.runtime?.pipeline || "dubai";
   const sb = getSupabaseAdmin();
   if (sb && supabaseConfigured()) {
-    const { count: leadCount, error } = await sb
-      .from("leads")
-      .select("*", { count: "exact", head: true })
-      .eq("campaign_id", config.id);
-    if (!error) {
-      const { count: withContacts } = await sb
+    try {
+      const { data, error } = await sb
         .from("leads")
-        .select("*", { count: "exact", head: true })
-        .eq("campaign_id", config.id)
-        .not("contact_1_name", "eq", "")
-        .not("contact_1_name", "is", null);
-      const { data: latest } = await sb
-        .from("leads")
-        .select("updated_at")
-        .eq("campaign_id", config.id)
-        .order("updated_at", { ascending: false })
-        .limit(1)
-        .maybeSingle();
-      return {
-        file: `supabase:leads/${config.id}`,
-        leadCount: leadCount ?? 0,
-        withContacts: withContacts ?? 0,
-        updatedAt: latest?.updated_at ?? null,
-        pipeline,
-        source: "supabase",
-      };
+        .select("contact_1_name, updated_at")
+        .eq("campaign_id", config.id);
+      if (!error && data) {
+        let withContacts = 0;
+        let updatedAt: string | null = null;
+        for (const row of data) {
+          if (row.contact_1_name) withContacts += 1;
+          const ts = row.updated_at as string | null;
+          if (ts && (!updatedAt || ts > updatedAt)) updatedAt = ts;
+        }
+        return {
+          file: `supabase:leads/${config.id}`,
+          leadCount: data.length,
+          withContacts,
+          updatedAt,
+          pipeline,
+          source: "supabase",
+        };
+      }
+    } catch {
+      /* fall through to CSV */
     }
   }
 
@@ -319,23 +387,27 @@ export async function listLeadsForCampaign(
 ): Promise<Lead[]> {
   const sb = getSupabaseAdmin();
   if (sb && supabaseConfigured()) {
-    const { data, error } = await sb
-      .from("leads")
-      .select("payload, company_name, company_domain, icp_score")
-      .eq("campaign_id", config.id)
-      .order("icp_score", { ascending: false, nullsFirst: false })
-      .limit(5000);
-    if (!error && data?.length) {
-      return data
-        .map((row) =>
-          mapLeadRow(
-            (row.payload || {}) as Record<string, string>,
-            config.market.primaryCity
+    try {
+      const { data, error } = await sb
+        .from("leads")
+        .select("payload, company_name, company_domain, icp_score")
+        .eq("campaign_id", config.id)
+        .order("icp_score", { ascending: false, nullsFirst: false })
+        .limit(5000);
+      if (!error && data?.length) {
+        return data
+          .map((row) =>
+            mapLeadRow(
+              (row.payload || {}) as Record<string, string>,
+              config.market.primaryCity
+            )
           )
-        )
-        .filter((l) => l.company || l.domain);
+          .filter((l) => l.company || l.domain);
+      }
+      if (!error && data) return [];
+    } catch {
+      /* fall through to CSV */
     }
-    if (!error && data) return [];
   }
 
   const inventory = await inventoryForCampaign(config);
